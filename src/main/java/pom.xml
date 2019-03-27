@@ -3,13 +3,13 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.colinma</groupId>
-	<artifactId>petstore</artifactId>
+	<groupId>com.petbook</groupId>
+	<artifactId>petbook</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>petstore</name>
-	<description>petstore</description>
+	<name>petbook</name>
+	<description>Facebook for pets</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
