@@ -5,7 +5,7 @@ import "rxjs/add/operator/map";
 import {Pet} from "../../model/pet";
 import {HttpErrorsService} from "../http-errors/http-errors.service";
 
-const URL: string = '/api/pet';
+const URL: string = 'http://localhost:8080/api/pet';
 
 
 @Injectable()

@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/api/pet", produces = "application/json")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PetController {
 
 	@Autowired
