@@ -7,9 +7,14 @@
       <ul class="nav nav-pills">
         <li class="nav-item">
           <a class="nav-link"
-             href="http://localhost:8099"
+             [class.active]="isActive('/pet')"
+             [routerLink]="['/pet']">Catalog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             href="http://localhost:4201"
              target="_blank"
-             [class.active]="isActive('/pet')">Upload your pet</a>
+             [class.active]="false">Upload your pet</a>
         </li>
       </ul>
     </nav>

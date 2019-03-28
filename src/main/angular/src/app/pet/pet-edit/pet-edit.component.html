@@ -1,10 +1,14 @@
+<div class="pet-detail">
+  <div class="card">
+    <div class="card-block">
+
 <form class="pet-edit" [formGroup]="pet">
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" id="name" formControlName="name"/>
   </div>
   <div class="form-group">
-    <label for="new">Is the pet new?</label>
+    <label for="new">Is the pet safe?</label>
     <input type="checkbox" id="new" formControlName="new" [checked]="pet.get('new').value"/>
   </div>
   <div class="form-group">
@@ -30,11 +34,11 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="highlighted">Is the pet important?</label>
+    <label for="highlighted">Is the pet famous?</label>
     <input type="checkbox" id="highlighted" formControlName="highlighted" [checked]="pet.get('highlighted').value"/>
   </div>
   <div class="form-group">
-    <label for="age">Age</label>
+    <label for="age">Web Presence</label>
     <input type="number" id="age" formControlName="age"/>
   </div>
   <div class="button-group">
@@ -52,3 +56,7 @@
     </button>
   </div>
 </form>
+
+    </div>
+  </div>
+</div>

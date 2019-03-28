@@ -1,17 +1,18 @@
 # Petbook
 
 ## Install Notes
+### angular-upload
 1. Enable Cloud Vision API, Maps JavaScript API and Google Cloud Storage JSON API
-1. Open the Credentials menu and create a Service account key (choose JSON as key type) and download the file to your computer. Also in the Credentials menu create an API key for Google Maps. Select HTTP referrers (web sites) under Application restrictions and enter the URLs that are allowed to show the map. In my case I added http://localhost:8100/* for development and https://demo.rasc.ch/* for production.
+1. Open the Credentials menu and create a Service account key (choose JSON as key type) and download the file to your computer. Also in the Credentials menu create an API key for Google Maps. Select HTTP referrers (web sites) under Application restrictions and enter the URLs that are allowed to show the map. In my case I added http://localhost:8100/*.
 1. Set API key in app.module.ts
 ```
     AgmCoreModule.forRoot({
       apiKey: 'yourkey'
     }),
 ```
-1. npm install @agm/core
-1. `npm rebuild node-sass`
-1. `npm install --save rxjs-compat`
+1. `nvm use 8.9`
+1. `npm install @angular/router@5.2.11`
+1. `npm install @agm/core`
 1. `node_modules/.bin/ng s --port 4201`
 1. Install Google Cloud SDK - https://cloud.google.com/sdk/docs/
 1. Configure CORS on storage bucket - https://cloud.google.com/storage/docs/configuring-cors

@@ -6,18 +6,18 @@
       <h6 class="card-subtitle mb-2">
         <div class="badge badge-pill badge-default"
              *ngIf="(pet| async)?.new">
-          New
+          Safe
         </div>
         <div class="badge badge-pill badge-info"
              *ngIf="(pet| async)?.highlighted">
-          Important
+          Famous
         </div>
         &nbsp;
       </h6>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="age">
-            <span>Age: </span>
+            <span>Web Presence: </span>
             <span>{{(pet| async)?.age}}</span>
           </div>
         </li>

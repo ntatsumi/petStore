@@ -16,7 +16,14 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import ch.rasc.googlevision.dto.*;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,19 +59,8 @@ import com.google.cloud.vision.v1.WebDetection;
 import com.google.cloud.vision.v1.WebDetection.WebImage;
 import com.google.cloud.vision.v1.WebDetection.WebPage;
 
-import ch.rasc.googlevision.dto.Face;
-import ch.rasc.googlevision.dto.FaceLandmark;
-import ch.rasc.googlevision.dto.Label;
-import ch.rasc.googlevision.dto.Landmark;
-import ch.rasc.googlevision.dto.LngLat;
-import ch.rasc.googlevision.dto.Logo;
-import ch.rasc.googlevision.dto.SafeSearch;
-import ch.rasc.googlevision.dto.Text;
-import ch.rasc.googlevision.dto.Vertex;
-import ch.rasc.googlevision.dto.VisionResult;
-import ch.rasc.googlevision.dto.Web;
-import ch.rasc.googlevision.dto.WebEntity;
-import ch.rasc.googlevision.dto.WebUrl;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @CrossOrigin
@@ -73,6 +69,9 @@ public class VisionController {
 	private static final String BUCKET_NAME = "nori-pets";
 	private Storage storage;
 	private ImageAnnotatorSettings imageAnnotatorSettings;
+
+	@Value("${app.petbook.url}")
+	private String petBookUrl;
 
 	public VisionController(AppConfig appConfig) {
 		Path serviceAccountFile = Paths.get(appConfig.getServiceAccountFile());
@@ -395,6 +394,46 @@ public class VisionController {
 
 				result.setWeb(web);
 			}
+
+			CreateRequest createRequest = new CreateRequest();
+			//name
+			createRequest.setName(uuid);
+			//type
+			for(Label label : result.getLabels()) {
+				if(label.getDescription().equalsIgnoreCase("dog")) {
+					createRequest.setType("dog");
+					break;
+				} else if(label.getDescription().equalsIgnoreCase("cat")) {
+					createRequest.setType("cat");
+					break;
+				} else if(label.getDescription().equalsIgnoreCase("fish")) {
+					createRequest.setType("fish");
+					break;
+				} else {
+					return result;
+				}
+			}
+			//web presence
+			createRequest.setAge(result.getWeb().getWebEntities().size());
+			//famous
+			if(result.getWeb().getWebEntities().size() > 5)
+				createRequest.setHighlighted(true);
+			//safe
+			if(result.getSafeSearch().getAdult().name().equalsIgnoreCase("VERY_UNLIKELY") ||
+					result.getSafeSearch().getViolence().name().equalsIgnoreCase("VERY_UNLIKELY"))
+				createRequest.setNew(true);
+			else
+				createRequest.setNew(false);
+
+
+			RestTemplate rest = new RestTemplate();
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", "application/json");
+			headers.add("Accept", "*/*");
+
+			HttpEntity<CreateRequest> requestEntity = new HttpEntity<>(createRequest, headers);
+			ResponseEntity<String> responseEntity = rest.exchange(
+					petBookUrl + "/api/pet", org.springframework.http.HttpMethod.POST, requestEntity, String.class);
 
 			return result;
 		}
